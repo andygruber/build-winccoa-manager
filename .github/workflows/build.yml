@@ -71,8 +71,8 @@ jobs:
             echo "NOW=$(date +'%Y-%m-%dT-%H%M%S')" >> $GITHUB_OUTPUT
           fi
           # Need a hash of the used URLs to cache the extracted WinCCOA packages on Windows
-          if [[ -n "${{ matrix.config.directurl_base }}" && -n "${{ matrix.config.directurl_apicpp }}" && -n "${{ matrix.config.directurl_codemeter }}" ]]; then
-            echo "urlhash=$(echo '${{ matrix.config.directurl_base }}-${{ matrix.config.directurl_apicpp }}-${{ matrix.config.directurl_codemeter }}' | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
+          if [[ -n "${{ matrix.config.msi_download_server }}" && -n "${{ matrix.config.msi_download_info }}" ]]; then
+            echo "urlhash=$(echo '${{ matrix.config.msi_download_server }}-${{ matrix.config.msi_download_info }}' | md5sum | awk '{print $1}')" >> $GITHUB_OUTPUT
           fi
         shell: bash
         id: initvars
@@ -97,20 +97,25 @@ jobs:
           path: ${{runner.temp}}/${{matrix.config.platform}}_${{matrix.config.version}}
           key: ${{matrix.config.platform}}-winccoa-${{matrix.config.version}}-${{ steps.initvars.outputs.urlhash }}
           # key: ${{matrix.config.platform}}-winccoa-${{matrix.config.version}}-${{ hashFiles('**/build.yml') }}-${{ steps.initvars.outputs.urlhash }}
-        if: matrix.config.directurl_base && matrix.config.directurl_apicpp && matrix.config.directurl_codemeter
+        if: matrix.config.msi_download_server && matrix.config.msi_download_info
 
       - run: |
           msiextract() {
             msiexec //a $1 //qn TARGETDIR='${{runner.temp}}\extract'
           }
           
+          # if ever someone wants to download the files from onedrive
           downloadOnedrive() {
             curl -O -J -sL 'https://api.onedrive.com/v1.0/shares/u!'$(echo -n "$1" | base64 -w0 | tr -d '=' | tr '/+' '_-')/driveItem/content -w "%{filename_effective}"
           }
 
-          downloadOnedrive '${{ matrix.config.directurl_base }}'
-          downloadOnedrive '${{ matrix.config.directurl_apicpp }}'
-          downloadOnedrive '${{ matrix.config.directurl_codemeter }}'
+          downloadWithCredentials() {
+            curl -u ${{ secrets.WINCCOA_USER}}:${{ secrets.WINCCOA_PASSWORD}} -O -J -sL $1
+          }
+
+          downloadWithCredentials '${{ matrix.config.msi_download_server }}/${{ matrix.config.msi_download_info }}/Base.msi'
+          downloadWithCredentials '${{ matrix.config.msi_download_server }}/${{ matrix.config.msi_download_info }}/APIcpp.msi'
+          downloadWithCredentials '${{ matrix.config.msi_download_server }}/${{ matrix.config.msi_download_info }}/NODEPLOY_CODEMETER.zip'
 
           msiextract Base.msi
           msiextract APIcpp.msi
@@ -125,7 +130,7 @@ jobs:
         working-directory: ${{runner.temp}}
         name: 'Extract WinCCOA packages'
         shell: bash
-        if: steps.cache-winccoa-packages-restore.outputs.cache-hit != 'true' && runner.os == 'Windows' && matrix.config.directurl_base && matrix.config.directurl_apicpp && matrix.config.directurl_codemeter
+        if: steps.cache-winccoa-packages-restore.outputs.cache-hit != 'true' && runner.os == 'Windows' && matrix.config.msi_download_server && matrix.config.msi_download_info
 
       - name: Cache WinCCOA packages
         id: cache-winccoa-packages-save
@@ -133,7 +138,7 @@ jobs:
         with:
           path: ${{runner.temp}}/${{matrix.config.platform}}_${{matrix.config.version}}
           key: ${{ steps.cache-winccoa-packages-restore.outputs.cache-primary-key }}
-        if: steps.cache-winccoa-packages-restore.outputs.cache-hit != 'true' && matrix.config.directurl_base && matrix.config.directurl_apicpp && matrix.config.directurl_codemeter
+        if: steps.cache-winccoa-packages-restore.outputs.cache-hit != 'true' && matrix.config.msi_download_server && matrix.config.msi_download_info
 
       - name: Restore cached Conan packages
         id: cache-conan-packages-restore

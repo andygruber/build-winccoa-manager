@@ -3,18 +3,16 @@ _win_3_19: &_win_3_19
   version: '3.19'
   github_runs_on: 'windows-2022'
   init_compiler: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" amd64 -vcvars_ver=14.2'
-  directurl_base: 'https://1drv.ms/u/s!some_public_share_url1'
-  directurl_apicpp: 'https://1drv.ms/u/s!some_public_share_url2'
-  directurl_codemeter: 'https://1drv.ms/u/s!some_public_share_url3'
+  msi_download_server: "https://jcr.grub3r.io/artifactory"
+  msi_download_info: "winccoa/3.19.9.1"
 
 _win_3_20: &_win_3_20
   platform: 'win'
   version: '3.20'
   github_runs_on: 'windows-2022'
   init_compiler: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" amd64 -vcvars_ver=14.3'
-  directurl_base: 'https://1drv.ms/u/s!some_public_share_url4'
-  directurl_apicpp: 'https://1drv.ms/u/s!some_public_share_url5'
-  directurl_codemeter: 'https://1drv.ms/u/s!some_public_share_url6'
+  msi_download_server: "https://jcr.grub3r.io/artifactory"
+  msi_download_info: "winccoa/3.20.0"
 
 _win_3_19_debug: &_win_3_19_debug
   <<: *_win_3_19

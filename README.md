@@ -50,14 +50,17 @@ Also provide the following credentials in the GitHub secrets:
 Windows is a lot more complicated. This is just an example implementation, replace it with something more fitting your environment.
 
 - On a machine with WinCC OA >= 3.19 installed, go to `C:\ProgramData\Package Cache` and search for `Base.msi` and `APIcpp.msi`.
-- Provide those files publicly shared in OneDrive (one link per file).
+- Provide those files on a secured server with the path being a combination of `msi_download_server` and `msi_download_info`, see below.
 - In addition take `C:\Windows\System32\WibuCm64.dll`, zip it to `NODEPLOY_CODEMETER.zip` and provide it as OneDrive link as well.
 - E.g.:
     ```
-    directurl_base: 'https://1drv.ms/u/s!some_public_share_url1'
-    directurl_apicpp: 'https://1drv.ms/u/s!some_public_share_url2'
-    directurl_codemeter: 'https://1drv.ms/u/s!some_public_share_url3'
+    msi_download_server: "https://www.for.example/artifactory"
+    msi_download_info: "winccoa/3.19.9.1"
     ```
+
+Also provide the following credentials in the GitHub secrets:
+- WINCCOA_USER
+- WINCCOA_PASSWORD
 
 ### Add Your C++ CMake Project
 

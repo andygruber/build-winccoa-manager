@@ -114,7 +114,7 @@ ctest -V --test-dir %BUILDDIR% --output-on-failure
 
 ```bash
 # change to the directory of the CMakeLists.txt
-cd demo
+cd demoDrv
 
 # set the API_ROOT to the location of the WinCC OA API
 export API_ROOT=/opt/WinCC_OA/3.19/api/

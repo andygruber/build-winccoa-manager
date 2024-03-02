@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=debian:bookworm-slim
+ARG BASE_IMAGE=debian:bullseye-slim
 
 FROM ${BASE_IMAGE}
 
@@ -32,5 +32,10 @@ RUN apt-get -y install \
     curl -o "/tmp/cmake_inst.sh" "https://cmake.org/files/v3.23/cmake-3.23.0-linux-x86_64.sh" && \
     chmod +x /tmp/cmake_inst.sh && /tmp/cmake_inst.sh --skip-license --prefix=/usr && rm /tmp/cmake_inst.sh && \
     pip3 install --break-system-packages conan
+
+COPY *.deb /tmp/oainst/
+RUN apt-get -y install /tmp/oainst/*.deb && rm -rf /tmp/oainst
+USER $USER
+ENV API_ROOT /opt/WinCC_OA/3.19/api/
 
 ENV SHELL=/bin/bash

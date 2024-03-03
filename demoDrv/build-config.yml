@@ -1,9 +1,9 @@
 demoDriver:
   configuration:
-    # win_3_19_relwithdebinfo:
-    #   <<: *_win_3_19_relwithdebinfo
-    # win_3_20_relwithdebinfo:
-    #   <<: *_win_3_20_relwithdebinfo
+    win_3_19_relwithdebinfo:
+      <<: *_win_3_19_relwithdebinfo
+    win_3_20_relwithdebinfo:
+      <<: *_win_3_20_relwithdebinfo
     debian_3_20_relwithdebinfo:
       <<: *_debian_3_20_relwithdebinfo
     debian_3_19_relwithdebinfo:

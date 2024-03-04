@@ -24,7 +24,7 @@ _win_3_19_release: &_win_3_19_release
   <<: *_win_3_19
   buildtype: 'Release'
 
-_win_3_19_win_3_19_relwithdebinfo: &_win_3_19_relwithdebinfo
+_win_3_19_relwithdebinfo: &_win_3_19_relwithdebinfo
   <<: *_win_3_19
   buildtype: 'RelWithDebInfo'
 
@@ -49,7 +49,7 @@ _debian_3_20: &_debian_3_20
 _debian_3_19: &_debian_3_19
   platform: 'debian'
   version: '3.19'
-  container_image: 'agruberetm/winccoa:v3.19.9-api'
+  container_image: 'agruberetm/winccoa:v3.19.9.1-api'
   github_runs_on: 'ubuntu-latest'
 
 _debian_3_20_relwithdebinfo: &_debian_3_20_relwithdebinfo

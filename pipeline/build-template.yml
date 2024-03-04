@@ -38,12 +38,12 @@ stages:
             value: "$(Build.BinariesDirectory)/build/install"
           - name: DEPLOYDIR
             value: "$(Build.BinariesDirectory)/build/deploy"
-          - group: WinCCOA_Download
 
           - ${{ if eq(parameters.agentType, 'containerized') }}:
               - name: API_ROOT
                 value: /opt/WinCC_OA/$(version)/api
           - ${{ else }}:
+              - group: WinCCOA_Download # credentials only required for native agents
               - name: API_ROOT
                 value: $(Agent.TempDirectory)/$(platform)_$(version)/api
 

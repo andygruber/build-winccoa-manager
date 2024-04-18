@@ -1,3 +1,9 @@
+# Moved to winccoa organization
+
+Here this repository will not be updated anymore.
+
+Refer to the new URL for a maintained version: https://github.com/winccoa/build-winccoa-manager
+
 # WinCC OA C++ API Manager Builder
 
 This GitHub repository provides an out-of-the-box GitHub Action and [Azure Pipeline](.docs/AZURE.md) for building C++ API managers for WinCC OA.
